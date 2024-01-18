@@ -39,6 +39,64 @@ class GameState():
             self.board[move.endRow][move.endCol] = move.pieceCaptured
             self.whiteToMove = not self.whiteToMove
 
+    """
+    All moves considering checks
+    """
+    def generateValidMoves(self):
+        return self.generatePossibleMoves()
+
+    """
+    All moves without considering checks
+    """
+    def generatePossibleMoves(self):
+        moves = [Move((0, 0), (2, 0), self.board)]
+        for row in range(len(self.board)):
+            for col in range(len(self.board[row])):
+                turn = self.board[row][col][0]
+                if (turn == "w" and self.whiteToMove) and (turn == "b" and not self.whiteToMove):
+                    piece = self.board[row][col][1]
+                    if piece == 'p':
+                        self.getPawnMoves(row, col, moves)
+                    elif piece == 'R':
+                        self.getRookMoves(row, col, moves)
+        return moves
+    
+    """
+    Get all the possible moves of a pawn given its location and add the moves to moves list
+    """
+    def getPawnMoves(self, row, col, moves):
+        pass
+
+    """
+    Get all the possible moves of a rook given its location and add the moves to moves list
+    """
+    def getRookMoves(self, row, col, moves):
+        pass
+
+    """
+    Get all the possible moves of a bishop given its location and add the moves to moves list
+    """
+    def getBishopMoves(self, row, col, moves):
+        pass
+
+    """
+    Get all the possible moves of a knight given its location and add the moves to moves list
+    """
+    def getKnightMoves(self, row, col, moves):
+        pass
+
+    """
+    Get all the possible moves of a queen given its location and add the moves to moves list
+    """
+    def getQueenMoves(self, row, col, moves):
+        pass
+
+    """
+    Get all the possible moves of a King given its location and add the moves to moves list
+    """
+    def getKingMoves(self, row, col, moves):
+        pass
+    
 class Move():
     ranksToRows = {"1": 7
                    , "2": 6

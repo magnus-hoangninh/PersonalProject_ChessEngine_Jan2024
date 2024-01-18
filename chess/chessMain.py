@@ -63,6 +63,9 @@ def main():
     selectedSquare = () # Keep track of the last click of the user (tuple: (row, col))
     playerClicks = []   # Keep track of the player's clicks (two tuples: [(), ()])
 
+    validMoves = gameState.generateValidMoves()
+    validMoveMade = False # Flag variable for when a valid move is made, cause we dont want to generate valideMoves every frame, expensive
+
     # Running game
     while gameRun:
         for e in p.event.get(): # Listen for event
@@ -80,13 +83,22 @@ def main():
                     playerClicks.append(selectedSquare)
                 if len(playerClicks) == 2: # Two valid clicks, now make move
                     move = chessEngine.Move(playerClicks[0], playerClicks[1], gameState.board)
-                    print(move.getChessNotation())
-                    gameState.makeMove(move)
+                    print(move.startRow, move.startCol)
+                    print(move.endRow, move.endCol)
+                    #print(move.getChessNotation())
+                    for item in validMoves:
+                        if move.startRow == item.startCol and move.startCol == item.startCol and move.endCol == item.endCol and move.endRow == item.endRow:
+                            gameState.makeMove(move)
+                            validMoveMade = True
                     selectedSquare = () # Clear
                     playerClicks = []   # Clear
             elif e.type == p.KEYDOWN: # UNDO
                 if e.key == p.K_z:
                     gameState.undoMove()
+                    validMoveMade = True
+        if validMoveMade:
+            validMoves = gameState.generateValidMoves()
+            validMoveMade = False
         drawGameState(screen, gameState)
         clock.tick(MAX_FPS)
         p.display.flip()
